@@ -69,13 +69,15 @@ public class ServletAnadirC extends HttpServlet {
                 boolean tel = this.cliente.editarTelefonoCliente(cedula, telefono);
                 
                 if (name && correo && tel) {
-                    out.println("<h1>Se ha agregado a " + nombre +" con ID "+ cedula +", email:  "+ email +" y teléfono "+ telefono +"</h1>\"");
+                    request.setAttribute("mensaje", "ok");
+                    request.getRequestDispatcher("nuevoCliente.jsp").forward(request, response);
                 }else{
-                    out.println("<h1>No se pudo agregar al cliente</h1>");
+                    request.setAttribute("mensajo", "error");
+                    request.getRequestDispatcher("nuevoCliente.jsp").forward(request, response);
                 }
             }else if(existe && registrado){
-                out.println("<h1>El cliente ya existe. Por favor intente de nuevo</h1>");
-                response.sendRedirect("nuevoCliente.jsp");
+                request.setAttribute("mensaje", "existe");
+                request.getRequestDispatcher("nuevoCliente.jsp").forward(request, response);
             }
                     
             out.println("</body>");
