@@ -41,6 +41,7 @@ public class ServletEdit extends HttpServlet {
             out.println("<title>Servlet ServletEdit</title>");
             out.println("</head>");
             out.println("<body>");
+            out.println("<h1>entrooooo</h1>");
             String nombreNuevo = request.getParameter("nombre");
             System.out.println("nombreN:" + nombreNuevo);
             if (nombreNuevo == "") {

@@ -36,49 +36,73 @@ public class ServletBB extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             this.cliente = ClienteDAO.getClienteDAO();
             
-            int cedula = Integer.parseInt(request.getParameter("busqueda"));
-//            String nombre = request.getParameter("nombre");
-//            String email = request.getParameter("email");
-//            int telefono = Integer.parseInt(request.getParameter("telefono"));
-            
-            long pos = this.cliente.buscarCliente(cedula);
-            String nombre = "";
-            String correo = "";
-            int telefono = 0;
-            String tel = "";
-            
-            if (pos == -1) {
-                response.sendRedirect("buscarCliente.jsp");
-            }else{
-                char name [] = this.cliente.leerChars(pos+4);
-                for (int i = 0; i < name.length; i++) {
-                    if (name[i] == '\u0000') {
-                        break;
-                    }else{
-                        nombre += name[i];
-                    }
-                }
+            if (request.getParameter("operacion").equals("Buscar")) {
                 
-                char corr [] = this.cliente.leerChars(pos+44);
-                for (int i = 0; i < corr.length; i++) {
-                    if (corr[i] == '\u0000') {
-                        break;
-                    }else{
-                        correo += corr[i];
+                int cedula = Integer.parseInt(request.getParameter("busqueda"));
+
+                long pos = this.cliente.buscarCliente(cedula);
+                String nombre = "";
+                String correo = "";
+                int telefono = 0;
+                String tel = "";
+
+                if (pos == -1) {
+                    response.sendRedirect("buscarCliente.jsp");
+                }else{
+                    char name [] = this.cliente.leerChars(pos+4);
+                    for (int i = 0; i < name.length; i++) {
+                        if (name[i] == '\u0000') {
+                            break;
+                        }else{
+                            nombre += name[i];
+                        }
                     }
+
+                    char corr [] = this.cliente.leerChars(pos+44);
+                    for (int i = 0; i < corr.length; i++) {
+                        if (corr[i] == '\u0000') {
+                            break;
+                        }else{
+                            correo += corr[i];
+                        }
+                    }
+                    telefono = this.cliente.leerEntero(pos+84);
+                    tel = Integer.toString(telefono);
                 }
-                telefono = this.cliente.leerEntero(pos+84);
-                tel = Integer.toString(telefono);
+                String ced = "";
+                ced = Integer.toString(cedula);
+
+                request.setAttribute("cedula", ced);
+                request.setAttribute("nombre", nombre);
+                request.setAttribute("email", correo);
+                request.setAttribute("telefono", tel);
+
+                request.getRequestDispatcher("buscarCliente.jsp").forward(request, response);
+            }else if (request.getParameter("operacion").equals("Borrar")){
+                String cc = request.getParameter("cedula");
+                String nom = request.getParameter("nombre");
+                System.out.println("cc: "+cc);
+                System.out.println("nombre: "+nom);
+                int cedula = Integer.parseInt(request.getParameter("cedula"));
+                String nombre = request.getParameter("nombre");
+                String correo = request.getParameter("email");
+                int telefono = Integer.parseInt(request.getParameter("telefono"));
+                
+                boolean borrar = this.cliente.borrarCliente(cedula);
+                long pos = this.cliente.buscarCliente(cedula);
+                if (borrar) {
+                    request.setAttribute("mensaje", "ok");
+                }else{
+                    request.setAttribute("mensaje", "error");
+                }
+                request.getRequestDispatcher("buscarCliente.jsp").forward(request, response);
+//                if (pos == -1) {
+//                    response.sendRedirect("buscarCliente.jsp");
+//                }else{
+//                    this.cliente.borrarCliente(cedula);
+//                }
             }
-            String ced = "";
-            ced = Integer.toString(cedula);
             
-            request.setAttribute("cedula", ced);
-            request.setAttribute("nombre", nombre);
-            request.setAttribute("email", correo);
-            request.setAttribute("telefono", tel);
-            
-            request.getRequestDispatcher("buscarCliente.jsp").forward(request, response);
             
             out.println("<!DOCTYPE html>");
             out.println("<html>");
@@ -86,7 +110,7 @@ public class ServletBB extends HttpServlet {
             out.println("<title>Servlet ServletBB</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>cedula"+cedula+", nombre: "+nombre+"</h1>");
+            //out.println("<h1>cedula"+cedula+", nombre: "+nombre+"</h1>");
             out.println("</body>");
             out.println("</html>");
         }

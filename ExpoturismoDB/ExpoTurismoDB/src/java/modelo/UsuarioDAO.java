@@ -304,7 +304,7 @@ public class UsuarioDAO {
 
             }
         }
-        if (actual.equals(s)) {
+        if (s.equals(actual)) {
 
             return true;
 

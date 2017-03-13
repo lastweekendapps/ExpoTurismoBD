@@ -4,7 +4,6 @@
     Author     : PC USUARIO
 --%>
 
-<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -13,61 +12,46 @@
         <title>JSP Page</title>
         <style>
             body {
-                background-image: url(Dubai.jpg);
+                background-image: url(Malta.jpg);
                 background-repeat: no-repeat;
                 background-size: cover;
                 margin: 0;
                 padding: 0;
             }
-            
+
             .logo{
                 text-align: right;
             }
-            
+
             .title{
                 text-align: center;
                 color: #ffffff;
             }
-            
+
             .subtitle{
                 color: #000000;
                 margin-left: 370px;
             }
-            
+
             .form{
                 text-align: center;
-                margin-left: 370px;
+                margin-left: 150px;
                 font-weight: bold;
             }
-            
+
             .editar{
                 text-align: center;
             }
-            
+
             .buscar{
                 width: 490px;
             }
-            
+
             .confC{
                 margin-left: 90px;
                 padding-left: 50px;
             }
-            
-            .tabla {
-                font-family: arial, sans-serif;
-                border-collapse: collapse;
-                width: 60%;
-                margin-left: 290px;
-            }
-            .tabla td, th {
-                border: 5px solid #dddddd;
-                text-align: left;
-                padding: 8px;
-            }
-            .tabla tr:nth-child(even) {
-                background-color: #dddddd;
-            }
-            
+
             .btn {
                 background: #3498db;
                 background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
@@ -85,6 +69,7 @@
                 padding: 10px 20px 10px 20px;
                 text-decoration: none;
             }
+
             .btn:hover {
                 background: #3cb0fd;
                 background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
@@ -94,7 +79,7 @@
                 background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
                 text-decoration: none;
             }
-            
+
             .enjoy-input {
                 display: inline-block;
                 -webkit-box-sizing: content-box;
@@ -117,6 +102,7 @@
                 -o-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
                 transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
             }
+
             .enjoy-input:hover {
                 border: 1px solid #a3a3a3;
                 background: rgba(255,255,255,1);
@@ -125,6 +111,7 @@
                 -o-transition: all 100ms cubic-bezier(0.42, 0, 0.58, 1);
                 transition: all 100ms cubic-bezier(0.42, 0, 0.58, 1);
             }
+
             .enjoy-input:focus {
                 border: 1px solid #018dc4;
                 -webkit-box-shadow: 4px 4px 4px 0 rgba(0,0,0,0.2) inset;
@@ -134,43 +121,51 @@
                 -o-transition: all 50ms cubic-bezier(0.42, 0, 0.58, 1);
                 transition: all 50ms cubic-bezier(0.42, 0, 0.58, 1);
             }
-            
-            .divT{
-                display: inline-block;
-                text-align: center;
-                height: 300px;
-                color: #ffffff;
-                overflow: auto;
-                width: 900px;
-                margin-left: 400px;
-            }
-            
         </style>    
     </head>
     <body>
         <div class="logo"><image src="logo_pagina.png"/></div>
-        <div class="title"><h2>LISTA DE CLIENTES</h2></div><br>
-        <div class="divT">
-            <table class="tabla">
+        <div class="title"><h2>NUEVO USUARIO</h2></div><br>
+        <div class="form">
+            <table text-align="center">
                 <tr>
-                    <th>Cedula</th>
-                    <th>Nombre</th>
-                    <th>Email</th>
-                    <th>Telefono</th>
+                    <td>
+                        <form action="NuevoUsuarioServlet" method="GET" id="newU">
+                            USUARIO: <input class="enjoy-input" type="text" name="nombre"<br><br><br>
+                            <div class="confC">CONFIRMAR CONTRASEÑA: <input class="enjoy-input" type="password" name="confPsw"></div><br><br>
+                        </form>
+                    </td>
+                    <td style="padding-left: 30px ; padding-bottom: 40px">
+                        CONTRASEÑA: <input class="enjoy-input" type="password" name="psw" form="newU"><br><br>
+                        ID: <input class="enjoy-input" type="text" name="id" form="newU"><br><br>
+                    </td>
+
+
+
                 </tr>
-                <%
-                    //ClienteDAO cliente = ClienteDAO.getClienteDAO();
-                    ArrayList registros = (ArrayList)request.getAttribute("registros");
-                    for (int i = 0; i < registros.size(); i+=4) {
-                %>
-                <tr>
-                    <td><%=registros.get(i)%></td>
-                    <td><%=registros.get(i+1)%></td>
-                    <td><%=registros.get(i+2)%></td>
-                    <td><%=registros.get(i+3)%></td>
-                </tr>
-                <%  }   %>
             </table>
+        </div><br><br>
+        <div class="editar">
+            <input class="btn" type="submit" value="Añadir Usuario" form="newU">
+            <%if (request.getAttribute("Mensaje") == "ok") {%>
+            <script>alert("Usuario creado!");</script> 
+            <%}%>
+            <% if (request.getAttribute("Mensaje1") == "no es numero") {%>
+
+            <script>alert("Error: el id debe ser un número.");</script>
+
+            <%} else if (request.getAttribute("Mensaje2") == "contraseñas diferentes") {%>
+
+
+            <script>alert("Error: las contraseñas no coinciden");</script>
+
+            <%} else if (request.getAttribute("Mensaje3") == "Error") {%>
+
+            <script>alert("Error al registrar el usuario. Asegúrese de llenar todos los campos corrrectamente");</script>
+
+            <%}%>
         </div>
+
+
     </body>
 </html>

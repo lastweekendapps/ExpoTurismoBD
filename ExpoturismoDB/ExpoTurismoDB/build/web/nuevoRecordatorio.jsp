@@ -4,7 +4,6 @@
     Author     : PC USUARIO
 --%>
 
-<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -13,7 +12,7 @@
         <title>JSP Page</title>
         <style>
             body {
-                background-image: url(Dubai.jpg);
+                background-image: url(Barcelona.jpg);
                 background-repeat: no-repeat;
                 background-size: cover;
                 margin: 0;
@@ -53,21 +52,6 @@
                 padding-left: 50px;
             }
             
-            .tabla {
-                font-family: arial, sans-serif;
-                border-collapse: collapse;
-                width: 60%;
-                margin-left: 290px;
-            }
-            .tabla td, th {
-                border: 5px solid #dddddd;
-                text-align: left;
-                padding: 8px;
-            }
-            .tabla tr:nth-child(even) {
-                background-color: #dddddd;
-            }
-            
             .btn {
                 background: #3498db;
                 background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
@@ -85,6 +69,7 @@
                 padding: 10px 20px 10px 20px;
                 text-decoration: none;
             }
+
             .btn:hover {
                 background: #3cb0fd;
                 background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
@@ -117,6 +102,7 @@
                 -o-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
                 transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
             }
+
             .enjoy-input:hover {
                 border: 1px solid #a3a3a3;
                 background: rgba(255,255,255,1);
@@ -125,6 +111,7 @@
                 -o-transition: all 100ms cubic-bezier(0.42, 0, 0.58, 1);
                 transition: all 100ms cubic-bezier(0.42, 0, 0.58, 1);
             }
+
             .enjoy-input:focus {
                 border: 1px solid #018dc4;
                 -webkit-box-shadow: 4px 4px 4px 0 rgba(0,0,0,0.2) inset;
@@ -133,44 +120,38 @@
                 -moz-transition: all 50ms cubic-bezier(0.42, 0, 0.58, 1);
                 -o-transition: all 50ms cubic-bezier(0.42, 0, 0.58, 1);
                 transition: all 50ms cubic-bezier(0.42, 0, 0.58, 1);
-            }
-            
-            .divT{
-                display: inline-block;
-                text-align: center;
-                height: 300px;
-                color: #ffffff;
-                overflow: auto;
-                width: 900px;
-                margin-left: 400px;
-            }
+}
+
             
         </style>    
     </head>
     <body>
         <div class="logo"><image src="logo_pagina.png"/></div>
-        <div class="title"><h2>LISTA DE CLIENTES</h2></div><br>
-        <div class="divT">
-            <table class="tabla">
+        <div class="title"><h2>NUEVO RECORDATORIO</h2></div><br>
+        <div class="form">
+            <table text-align="center">
                 <tr>
-                    <th>Cedula</th>
-                    <th>Nombre</th>
-                    <th>Email</th>
-                    <th>Telefono</th>
+                    <td>
+                        <form action="ServletNewU" method="POST" id="newR">
+                            <div class="description">DESCRIPCIÓN: <input style="width: 440px" class="enjoy-input" type="text" name="descr"></div><br>
+                        </form>
+                    </td>
                 </tr>
-                <%
-                    //ClienteDAO cliente = ClienteDAO.getClienteDAO();
-                    ArrayList registros = (ArrayList)request.getAttribute("registros");
-                    for (int i = 0; i < registros.size(); i+=4) {
-                %>
-                <tr>
-                    <td><%=registros.get(i)%></td>
-                    <td><%=registros.get(i+1)%></td>
-                    <td><%=registros.get(i+2)%></td>
-                    <td><%=registros.get(i+3)%></td>
-                </tr>
-                <%  }   %>
             </table>
+            <table text-align="center">
+                <tr>
+                    <td>
+                        FECHA: <input class="enjoy-input" type="text" name="date" form="newR"><br><br>
+                    </td>
+                    <td>
+                        HORA: <input class="enjoy-input" type="text" name="hour" form="newR"><br><br
+                    </td>
+                </tr>
+            </table>
+        </div><br><br>
+        <div class="editar">
+            <input class="btn" type="submit" value="Añadir Recordatorio" form="newR">
         </div>
+        
     </body>
 </html>

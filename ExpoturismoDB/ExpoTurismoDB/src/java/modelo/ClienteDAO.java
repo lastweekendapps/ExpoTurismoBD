@@ -22,8 +22,8 @@ public class ClienteDAO {
     private static ClienteDAO clienteDAO;
 
     private ClienteDAO() throws FileNotFoundException, IOException {
-        this.raf = new RandomAccessFile("pruebaClientes.txt", "rw");
-        this.rafTree = new RandomAccessFile("pruebaClientes.txt", "rw");//Maneja el árbol en el archivo profesor.txt
+        this.raf = new RandomAccessFile("C:\\Users\\Labing\\Desktop\\prueba2.txt", "rw");
+        this.rafTree = new RandomAccessFile("C:\\Users\\Labing\\Desktop\\prueba2.txt", "rw");//Maneja el árbol en el archivo profesor.txt
         this.raf.seek(0);
         long ref = -1;
         
@@ -34,7 +34,7 @@ public class ClienteDAO {
             this.finalPos = 8;
             this.raf.seek(0);
             this.raf.writeLong(finalPos);
-            for (int i = 0; i < 2800; i++) {
+            for (int i = 0; i < 2800; i+=2) {
                 this.raf.writeChar('\u0000');
             }
         }
@@ -259,30 +259,17 @@ public class ClienteDAO {
         
     }
     
-    public void borrarCliente(int id) throws IOException{
-        this.rafTree.seek(8);
+    public boolean borrarCliente(int id) throws IOException{
         boolean flag = false;
-        while(!flag){
-            int actual = this.rafTree.readInt();
-            if (actual < id) {
-                this.rafTree.skipBytes(8);
-                long posDer = this.rafTree.readLong();
-                if (posDer != -1) {
-                    this.rafTree.seek(posDer);
-                }else{
-                    flag = true;
-                }
-            }else if(actual > id){
-                long posIzq = this.rafTree.readLong();
-                if(posIzq != -1){
-                    this.rafTree.seek(posIzq);
-                }else{
-                    flag = true;
-                }
-            }else if(actual == id){
-                this.rafTree.skipBytes(16);
-                this.rafTree.writeFloat(-1);
-            }
+        long pos = buscarCliente(id);
+        if (pos == -1) {
+            return false;
+        }else{
+            this.rafTree.seek(pos);
+            long posArbol =2808 + (rafTree.getFilePointer() - 8) / 28 * 88;
+            rafTree.seek(posArbol+20);
+            rafTree.writeLong(-1);
+            return true;
         }
     }
     
@@ -336,37 +323,50 @@ public class ClienteDAO {
         ArrayList reg = new ArrayList();
         int cantidad = (int) finalPos/28;
         String nombres [] = new String [cantidad];
-        this.rafTree.seek(28);
-        long primeraPos = this.rafTree.readLong();
-        for (int i = (int) primeraPos; i < this.raf.length(); i+=88) {
-            this.raf.seek(i);
-            int cedula = this.raf.readInt();
-            reg.add(cedula);
-            String nombre = "";
-            for (int j = 0; j < 20; j++) {
-                char n = this.raf.readChar();
-                if (n == '\u0000') {
-                    break;
-                }else{
-                    nombre += n;
+        long primeraPos = 0;
+        for (int i = 8; i < finalPos; i+=28) {
+            this.rafTree.seek(i+20);
+            primeraPos = this.rafTree.readLong();
+            
+            if (primeraPos != -1) {
+                raf.seek(primeraPos);
+                int cedula = this.raf.readInt();
+                reg.add(cedula);
+                String nombre = "";
+                for (int j = 0; j < 20; j++) {
+                    char n = this.raf.readChar();
+                    if (n == '\u0000') {
+                        break;
+                    }else{
+                        nombre += n;
+                    }
                 }
-            }
-            reg.add(nombre);
-            this.raf.seek(i+44);
-            String correo = "";
-            for (int j = 0; j < 20; j++) {
-                char c = this.raf.readChar();
-                if (c == '\u0000') {
-                    break;
-                }else{
-                    correo += c;
+
+                reg.add(nombre);
+                this.raf.seek(primeraPos+44);
+                String correo = "";
+                for (int j = 0; j < 20; j++) {
+                    char c = this.raf.readChar();
+                    if (c == '\u0000') {
+                        break;
+                    }else{
+                        correo += c;
+                    }
                 }
+                reg.add(correo);
+                this.raf.seek(primeraPos+84);
+                int telefono = this.raf.readInt();
+                reg.add(telefono);
             }
-            reg.add(correo);
-            this.raf.seek(i+84);
-            int telefono = this.raf.readInt();
-            reg.add(telefono);
         }
+//        System.out.println("primera Pos: "+primeraPos+"-----------------------------------");
+//        for (int i = (int) primeraPos; i < this.raf.length(); i+=88) {
+//            this.raf.seek(i);
+//            
+//            this.raf.seek(i+84);
+//            int telefono = this.raf.readInt();
+//            reg.add(telefono);
+//        }
         return reg;
     }
 }

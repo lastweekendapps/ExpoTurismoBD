@@ -1,10 +1,9 @@
 <%-- 
-    Document   : buscarCliente
-    Created on : 11/03/2017, 08:01:07 PM
+    Document   : nuevoCliente
+    Created on : 11/03/2017, 06:40:23 PM
     Author     : PC USUARIO
 --%>
 
-<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -13,7 +12,7 @@
         <title>JSP Page</title>
         <style>
             body {
-                background-image: url(Dubai.jpg);
+                background-image: url(Venecia.jpg);
                 background-repeat: no-repeat;
                 background-size: cover;
                 margin: 0;
@@ -21,51 +20,22 @@
             }
             
             .logo{
-                text-align: right;
+                text-align: left;
             }
             
             .title{
                 text-align: center;
-                color: #ffffff;
-            }
-            
-            .subtitle{
-                color: #000000;
-                margin-left: 370px;
             }
             
             .form{
                 text-align: center;
-                margin-left: 370px;
+                margin-left: 310px;
                 font-weight: bold;
             }
             
-            .editar{
+            .button{
+                margin-left: 300px;
                 text-align: center;
-            }
-            
-            .buscar{
-                width: 490px;
-            }
-            
-            .confC{
-                margin-left: 90px;
-                padding-left: 50px;
-            }
-            
-            .tabla {
-                font-family: arial, sans-serif;
-                border-collapse: collapse;
-                width: 60%;
-                margin-left: 290px;
-            }
-            .tabla td, th {
-                border: 5px solid #dddddd;
-                text-align: left;
-                padding: 8px;
-            }
-            .tabla tr:nth-child(even) {
-                background-color: #dddddd;
             }
             
             .btn {
@@ -85,6 +55,7 @@
                 padding: 10px 20px 10px 20px;
                 text-decoration: none;
             }
+
             .btn:hover {
                 background: #3cb0fd;
                 background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
@@ -117,6 +88,7 @@
                 -o-transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
                 transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
             }
+
             .enjoy-input:hover {
                 border: 1px solid #a3a3a3;
                 background: rgba(255,255,255,1);
@@ -125,6 +97,7 @@
                 -o-transition: all 100ms cubic-bezier(0.42, 0, 0.58, 1);
                 transition: all 100ms cubic-bezier(0.42, 0, 0.58, 1);
             }
+
             .enjoy-input:focus {
                 border: 1px solid #018dc4;
                 -webkit-box-shadow: 4px 4px 4px 0 rgba(0,0,0,0.2) inset;
@@ -134,43 +107,37 @@
                 -o-transition: all 50ms cubic-bezier(0.42, 0, 0.58, 1);
                 transition: all 50ms cubic-bezier(0.42, 0, 0.58, 1);
             }
-            
-            .divT{
-                display: inline-block;
-                text-align: center;
-                height: 300px;
-                color: #ffffff;
-                overflow: auto;
-                width: 900px;
-                margin-left: 400px;
-            }
-            
-        </style>    
+        </style>
     </head>
     <body>
         <div class="logo"><image src="logo_pagina.png"/></div>
-        <div class="title"><h2>LISTA DE CLIENTES</h2></div><br>
-        <div class="divT">
-            <table class="tabla">
-                <tr>
-                    <th>Cedula</th>
-                    <th>Nombre</th>
-                    <th>Email</th>
-                    <th>Telefono</th>
-                </tr>
-                <%
-                    //ClienteDAO cliente = ClienteDAO.getClienteDAO();
-                    ArrayList registros = (ArrayList)request.getAttribute("registros");
-                    for (int i = 0; i < registros.size(); i+=4) {
-                %>
-                <tr>
-                    <td><%=registros.get(i)%></td>
-                    <td><%=registros.get(i+1)%></td>
-                    <td><%=registros.get(i+2)%></td>
-                    <td><%=registros.get(i+3)%></td>
-                </tr>
-                <%  }   %>
+        <div class="title"><h2>NUEVO CLIENTE:</h2></div>
+        <div class="form">
+            <table text-align="center">
+                
+                    <form action="ServletAnadirC" method="GET" id="anadir">
+                        <tr>
+                            <td>
+                            NOMBRE: <input class="enjoy-input" type="text" name="nombre"><br><br>
+                            CEDULA: <input class="enjoy-input" type="text" name="cedula"><br><br>
+                            DESTINO: <input class="enjoy-input" type="text" name="destino"><br><br>
+                            ACOMPAÑANTES: <input class="enjoy-input" type="text" name="acompanantes">
+                            </td>
+                            <td>
+                            EMAIL: <input class="enjoy-input" type="text" name="email" form="anadir"><br><br>
+                            TELÉFONO: <input class="enjoy-input" type="text" name="telefono" form="anadir"><br><br>
+                            FECHA: <input class="enjoy-input" type="text" name="fecha" form="anadir"><br><br>
+                            </td>   
+                        </tr>
+                        <tr>
+                            <td>
+                                <br><div class="button"><input class="btn" type="submit" value="AÑADIR CLIENTE" form="anadir"/></div>
+                            </td>
+                        </tr>
+                    </form>
+                
             </table>
-        </div>
+        </div><br><br>
+        
     </body>
 </html>
