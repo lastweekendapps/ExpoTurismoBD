@@ -60,7 +60,8 @@ public class ServletAnadirC extends HttpServlet {
             if (!existe) {
                 this.cvo = new ClienteVO(cedula, nombre, email, telefono);
                 this.cliente.crearArchivo(cvo);
-                out.println("<h1>Se ha agregado a " + nombre +" con ID "+ cedula +", email:  "+ email +" y teléfono "+ telefono +"</h1>\"");
+                request.setAttribute("mensaje", "ok");
+                request.getRequestDispatcher("nuevoCliente.jsp").forward(request, response);
             }else if(existe && !registrado){
                 long pos = this.cliente.recuperarRegistro(cedula);
                 
