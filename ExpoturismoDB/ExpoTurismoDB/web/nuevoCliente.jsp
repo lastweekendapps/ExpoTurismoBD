@@ -113,9 +113,9 @@
         <div class="logo"><image src="logo_pagina.png"/></div>
         <div class="title"><h2>NUEVO CLIENTE:</h2></div>
         <%if(request.getAttribute("mensaje") == "ok"){%>
-            <script>alert("Cliente borrado");</script>
+            <script>alert("Cliente agregado");</script>
         <%}else if(request.getAttribute("mensaje") == "error"){%>
-            <script>alert("No se pudo borrar");</script>
+            <script>alert("No se pudo agregar");</script>
             <%}else if(request.getAttribute("mensaje") == "existe"){%>
             <script>alert("El cliente ya existe");</script>
             <%}%>
